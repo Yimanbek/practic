@@ -1,0 +1,93 @@
+<!-- templates/post_detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Clone - {{ post.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+        h2 {
+            color: #007BFF;
+            margin-top: 20px;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
+
+        .comment-container {
+            margin-top: 10px;
+        }
+
+        .comment {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            color: #007BFF;
+        }
+
+        .back-link {
+            color: #007BFF;
+            text-decoration: none;
+            margin-top: 20px;
+            display: block;
+        }
+    </style>
+    <script>
+        // Пример простого JavaScript для плавной прокрутки к форме комментария
+        function scrollToCommentForm() {
+            const commentForm = document.getElementById('comment-form');
+            commentForm.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <p>Author: {{ post.author.username }}</p>
+    <p>Created at: {{ post.created_at }}</p>
+
+    <h2>Comments:</h2>
+    <div class="comment-container">
+        {% for comment in comments %}
+            <div class="comment">
+                <p>{{ comment.content }}</p>
+                <p class="comment-author">Author: {{ comment.author.email }}</p>
+                <p>Created at: {{ comment.created_at }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2>Add a Comment:</h2>
+    <form id="comment-form" method="post" action="{% url 'create_comment' post.id %}">
+        {% csrf_token %}
+        <label for="content">Comment:</label>
+        <textarea name="content" required></textarea>
+        <br>
+        <input type="submit" value="Submit Comment" onclick="scrollToCommentForm()">
+    </form>
+
+    <a href="{% url 'index' %}" class="back-link">Back to Home</a>
+</body>
+</html>
